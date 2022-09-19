@@ -1,0 +1,50 @@
+#ifndef STD_SORT_HPP
+#define STD_SORT_HPP
+
+#include <functional>
+#include <algorithm>
+#include <string>
+#if MEASUREMENT
+#include <iostream>
+#endif
+
+namespace sorting
+{
+    class stl
+    {
+    public:
+        static constexpr std::string name()
+        {
+            return "stl";
+        }
+#if MEASUREMENT
+        static inline struct measurements
+        {
+            void print(const char *prefix = "") const
+            {
+                std::cout << prefix << "Cannot measure operation counts." << std::endl;
+            }
+
+            void println(const char *prefix = "") const
+            {
+                print(prefix);
+                std::cout << std::endl;
+            }
+        } measurements;
+#endif
+
+        template <typename T, class Predicate = std::less<T>>
+        static void sort(T *s, T *t, const Predicate &cmp = Predicate())
+        {
+            std::sort(s, t, cmp);
+        }
+
+        template <typename T, class Predicate = std::less<T>>
+        static void partial_sort(T *s, T *w, T *t, const Predicate &cmp = Predicate())
+        {
+            std::partial_sort(s, w, t, cmp);
+        }
+    };
+}
+
+#endif
