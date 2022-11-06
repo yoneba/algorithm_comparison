@@ -67,25 +67,25 @@ namespace collection
     class linked_list
     {
         NodeBase head;
-        linked_node<NodeBase, T> *base;
-        int current;
-        const int entire;
+        linked_node<NodeBase, T> *nodes;
+        int n_active_nodes;
+        const int n_nodes;
 
     public:
-        explicit linked_list(int n) : base(new linked_node<NodeBase, T>[n]), current(0), entire(n)
+        explicit linked_list(int n) : nodes(new linked_node<NodeBase, T>[n]), n_active_nodes(0), n_nodes(n)
         {
             head.clear();
         }
 
-        linked_node<NodeBase, T> *node_at(int index) { return base + index; }
-        const linked_node<NodeBase, T> *cnode_at(int index) const { return base + index; }
-        int index_of(const linked_node<NodeBase, T> *p) const { return p - base; }
-        int index_of(const list_iterator<linked_node<NodeBase, T>> &itr) const { return itr.address() - base; }
-        int index_of(const list_iterator<const linked_node<NodeBase, T>> &itr) const { return itr.address() - base; }
+        linked_node<NodeBase, T> *node_at(int index) { return nodes + index; }
+        const linked_node<NodeBase, T> *cnode_at(int index) const { return nodes + index; }
+        int index_of(const linked_node<NodeBase, T> *p) const { return p - nodes; }
+        int index_of(const list_iterator<linked_node<NodeBase, T>> &itr) const { return itr.address() - nodes; }
+        int index_of(const list_iterator<const linked_node<NodeBase, T>> &itr) const { return itr.address() - nodes; }
 
-        bool empty() const { return current == 0; }
-        int size() const { return current; }
-        int capacity() const { return entire; }
+        bool empty() const { return n_active_nodes == 0; }
+        int size() const { return n_active_nodes; }
+        int capacity() const { return n_nodes; }
 
         list_iterator<linked_node<NodeBase, T>> begin() { return static_cast<linked_node<NodeBase, T> *>(head.front()); }
         list_iterator<linked_node<NodeBase, T>> end() { return static_cast<linked_node<NodeBase, T> *>(&head); }
@@ -99,57 +99,57 @@ namespace collection
         void clear()
         {
             head.clear();
-            current = 0;
+            n_active_nodes = 0;
         }
 
         void push_front(linked_node<NodeBase, T> *p)
         {
             head.push_front(p);
-            ++current;
+            ++n_active_nodes;
         }
 
         void push_front(int index)
         {
-            push_front(base + index);
+            push_front(nodes + index);
         }
 
         void push_back(linked_node<NodeBase, T> *p)
         {
             head.push_back(p);
-            ++current;
+            ++n_active_nodes;
         }
 
         void push_back(int index)
         {
-            push_back(base + index);
+            push_back(nodes + index);
         }
 
         void pop_front()
         {
             head.pop_front();
-            --current;
+            --n_active_nodes;
         }
 
         void pop_back()
         {
             head.pop_back();
-            --current;
+            --n_active_nodes;
         }
 
         void remove(linked_node<NodeBase, T> *p)
         {
             p->leave();
-            --current;
+            --n_active_nodes;
         }
 
         void remove(int index)
         {
-            remove(base + index);
+            remove(nodes + index);
         }
 
         ~linked_list()
         {
-            delete[] base;
+            delete[] nodes;
         }
     };
 
