@@ -4,9 +4,6 @@
 #include "singly_linked_node.hpp"
 #include "doubly_linked_node.hpp"
 
-#include <type_traits>
-#include <utility>
-
 namespace collection
 {
     template <class NodeBase, typename T>

@@ -49,7 +49,7 @@ void test_doubly_linked_list()
     dl.push_back(0);
     assert(dl.size() == 3);
     double s = 0;
-    for (auto itr = dl.crbegin(); itr != dl.crend(); ++itr)
+    for (auto itr = dl.crbegin(); itr != dl.crend(); --itr)
     {
         if (itr->value == 2)
             assert(dl.index_of(itr) == 2);
