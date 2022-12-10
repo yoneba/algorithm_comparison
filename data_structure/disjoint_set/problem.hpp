@@ -58,8 +58,14 @@ namespace disjoint_set
         int n_queries;
 
         problem() = default;
-        problem(const problem &) = delete;
-        problem &operator=(const problem &) = delete;
+        problem &operator=(const problem &source)
+        {
+            for (int q = 0; q < source.n_queries; q++)
+                queries[q] = source.queries[q];
+            n_elements = source.n_elements;
+            n_queries = source.n_queries;
+            return *this;
+        }
 
         static void validate_input_size(int n_elements, int n_queries)
         {

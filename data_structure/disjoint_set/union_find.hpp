@@ -40,6 +40,9 @@ namespace disjoint_set
         union_find_node *parent;
         int rank;
 
+        union_find_node(const union_find_node &) = delete;
+        union_find_node &operator=(const union_find_node &) = delete;
+
     public:
 #if MEASUREMENT
         static inline struct measurements

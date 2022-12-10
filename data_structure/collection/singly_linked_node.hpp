@@ -7,6 +7,9 @@ namespace collection
 {
     class singly_linked_node_base
     {
+        singly_linked_node_base(const singly_linked_node_base &) = delete;
+        singly_linked_node_base &operator=(const singly_linked_node_base &) = delete;
+
     protected:
         singly_linked_node_base *next;
 

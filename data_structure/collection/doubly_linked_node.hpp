@@ -7,6 +7,9 @@ namespace collection
 {
     class doubly_linked_node_base
     {
+        doubly_linked_node_base(const doubly_linked_node_base &) = delete;
+        doubly_linked_node_base &operator=(const doubly_linked_node_base &) = delete;
+
     protected:
         doubly_linked_node_base *next;
         doubly_linked_node_base *prev;

@@ -16,8 +16,13 @@ namespace sorting
         int n_items;
 
         problem() = default;
-        problem(const problem &) = delete;
-        problem &operator=(const problem &) = delete;
+        problem &operator=(const problem &source)
+        {
+            for (int i = 0; i < source.n_items; i++)
+                items[i] = source.items[i];
+            n_items = source.n_items;
+            return *this;
+        }
 
         static void validate_input_size(int n_items)
         {

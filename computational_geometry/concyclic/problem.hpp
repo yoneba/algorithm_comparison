@@ -18,8 +18,13 @@ namespace concyclic
         int n_points;
 
         problem() = default;
-        problem(const problem &) = delete;
-        problem &operator=(const problem &) = delete;
+        problem &operator=(const problem &source)
+        {
+            for (int i = 0; i < source.n_points; i++)
+                points[i] = source.points[i];
+            n_points = source.n_points;
+            return *this;
+        }
 
         static void validate_input_size(int width, int height, int n_points)
         {
