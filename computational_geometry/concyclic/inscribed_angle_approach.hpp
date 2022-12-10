@@ -19,7 +19,7 @@ namespace concyclic
         return x == 0 ? std::numeric_limits<T>::infinity() : y / x;
     }
 
-    template <class Sorting>
+    template <class Sorting = sorting::intro<>>
     class inscribed_angle_sorting
     {
     public:
