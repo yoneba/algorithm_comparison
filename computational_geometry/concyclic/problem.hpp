@@ -23,8 +23,8 @@ namespace concyclic
 
         static void validate_input_size(int width, int height, int n_points)
         {
-            if (n_points > NPointsLimit)
-                throw std::out_of_range("the number of points must not exceed " + std::to_string(NPointsLimit));
+            if (n_points <= 0 || NPointsLimit < n_points)
+                throw std::out_of_range("the number of points must be in (0," + std::to_string(NPointsLimit) + "]");
             if (width <= 0 || height <= 0 || width > WidthLimit || height > HeightLimit)
                 throw std::out_of_range(std::format("the following required: 0 < width <= {} and 0 < height <= {}", WidthLimit, HeightLimit));
             if (width * height < n_points)

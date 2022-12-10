@@ -25,8 +25,8 @@ void benchmark(long long range, long long howmany, long long result[])
 
 void validate_input_size(long long range, long long howmany, long long howmany_limit)
 {
-    if (howmany > howmany_limit)
-        throw std::out_of_range("the number of elements to obtain must not exceed " + std::to_string(howmany_limit));
+    if (howmany <= 0 || howmany_limit < howmany)
+        throw std::out_of_range("the number of elements to obtain must be in (0," + std::to_string(howmany_limit) + "]");
     if (range < howmany)
         throw std::out_of_range("range must not be less than the number of elements to obtain");
 }

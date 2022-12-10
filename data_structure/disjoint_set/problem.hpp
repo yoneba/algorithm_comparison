@@ -63,10 +63,10 @@ namespace disjoint_set
 
         static void validate_input_size(int n_elements, int n_queries)
         {
-            if (n_elements > NElementsLimit)
-                throw std::out_of_range("the number of elements must not exceed " + std::to_string(NElementsLimit));
-            if (n_queries > NQueriesLimit)
-                throw std::out_of_range("the number of queries must not exceed " + std::to_string(NQueriesLimit));
+            if (n_elements <= 0 || NElementsLimit < n_elements)
+                throw std::out_of_range("the number of elements must be in (0," + std::to_string(NElementsLimit) + "]");
+            if (n_queries <= 0 || NQueriesLimit < n_queries)
+                throw std::out_of_range("the number of queries must be in (0," + std::to_string(NQueriesLimit) + "]");
         }
 
         void randomly_generate(int n_elements, int n_queries)

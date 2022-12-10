@@ -21,8 +21,8 @@ namespace sorting
 
         static void validate_input_size(int n_items)
         {
-            if (n_items > NItemsLimit)
-                throw std::out_of_range("the number of items must not exceed " + std::to_string(NItemsLimit));
+            if (n_items <= 0 || NItemsLimit < n_items)
+                throw std::out_of_range("the number of items must be in (0," + std::to_string(NItemsLimit) + "]");
         }
 
         void randomly_generate(int n_items)
