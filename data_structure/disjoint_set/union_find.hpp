@@ -1,5 +1,5 @@
-#ifndef UNION_FIND_HPP
-#define UNION_FIND_HPP
+#ifndef DISJOINT_SET_UNION_FIND_HPP
+#define DISJOINT_SET_UNION_FIND_HPP
 
 #include <string>
 #include <format>

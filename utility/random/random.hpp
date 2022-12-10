@@ -1,5 +1,5 @@
-#ifndef RANDOM_HPP
-#define RANDOM_HPP
+#ifndef RANDOM_RANDOM_HPP
+#define RANDOM_RANDOM_HPP
 
 #include "../sorting/merge_sort.hpp"
 

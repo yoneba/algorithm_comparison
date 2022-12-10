@@ -1,5 +1,5 @@
-#ifndef STD_SORT_HPP
-#define STD_SORT_HPP
+#ifndef SOTRING_STD_SORT_HPP
+#define SOTRING_STD_SORT_HPP
 
 #include <functional>
 #include <algorithm>

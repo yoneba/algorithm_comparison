@@ -1,5 +1,5 @@
-#ifndef CONCYCLIC_HPP
-#define CONCYCLIC_HPP
+#ifndef CONCYCLIC_BASIC_HPP
+#define CONCYCLIC_BASIC_HPP
 
 #include <complex>
 #include <limits>

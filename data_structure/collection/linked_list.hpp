@@ -1,5 +1,5 @@
-#ifndef LINKED_LIST_HPP
-#define LINKED_LIST_HPP
+#ifndef COLLECTION_LINKED_LIST_HPP
+#define COLLECTION_LINKED_LIST_HPP
 
 #include "singly_linked_node.hpp"
 #include "doubly_linked_node.hpp"

@@ -1,5 +1,5 @@
-#ifndef MERGE_SORT_HPP
-#define MERGE_SORT_HPP
+#ifndef SOTRING_MERGE_SORT_HPP
+#define SOTRING_MERGE_SORT_HPP
 
 #include "insertion_sort.hpp"
 

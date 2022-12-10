@@ -1,5 +1,5 @@
-#ifndef HEAP_SORT_HPP
-#define HEAP_SORT_HPP
+#ifndef SOTRING_HEAP_SORT_HPP
+#define SOTRING_HEAP_SORT_HPP
 
 #include <functional>
 #include <format>

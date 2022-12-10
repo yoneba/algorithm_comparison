@@ -1,5 +1,5 @@
-#ifndef QUICK_SORT_HPP
-#define QUICK_SORT_HPP
+#ifndef SOTRING_QUICK_SORT_HPP
+#define SOTRING_QUICK_SORT_HPP
 
 #include "insertion_sort.hpp"
 #include "heap_sort.hpp"
