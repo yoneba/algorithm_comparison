@@ -23,6 +23,11 @@ namespace sorting
             long long item_moved = 0;
             long long sort_called = 0;
 
+            void reset()
+            {
+                *this = measurements();
+            }
+
             void print(const char *prefix = "") const
             {
                 std::cout << prefix << "comparison = " << comparison << std::endl;
@@ -83,6 +88,11 @@ namespace sorting
             long long comparison = 0;
             long long item_moved = 0;
             long long sort_called = 0;
+
+            void reset()
+            {
+                *this = measurements();
+            }
 
             void print(const char *prefix = "") const
             {

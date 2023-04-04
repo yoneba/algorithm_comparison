@@ -28,9 +28,10 @@ namespace sorting
             long long combine_called = 0;
             long long sort_called = 0;
 
-            measurements()
+            void reset()
             {
-                insertion::measurements = insertion::measurements::measurements();
+                *this = measurements();
+                insertion::measurements.reset();
             }
 
             void print(const char *prefix = "") const

@@ -55,6 +55,11 @@ namespace disjoint_set
             long long rank_incremented = 0;
             long long union_carried_out = 0;
 
+            void reset()
+            {
+                *this = measurements();
+            }
+
             void print(const char *prefix = "") const
             {
                 std::cout << prefix << "constructor_called = " << constructor_called << std::endl;
@@ -221,9 +226,9 @@ namespace disjoint_set
 #if MEASUREMENT
         static inline struct measurements
         {
-            measurements()
+            void reset()
             {
-                union_find_node<FindStrategy>::measurements = union_find_node<FindStrategy>::measurements::measurements();
+                union_find_node<FindStrategy>::measurements.reset();
             }
 
             void print(const char *prefix = "") const
@@ -295,6 +300,11 @@ namespace disjoint_set
             long long unite_called = 0;
             long long rank_incremented = 0;
             long long union_carried_out = 0;
+
+            void reset()
+            {
+                *this = measurements();
+            }
 
             void print(const char *prefix = "") const
             {

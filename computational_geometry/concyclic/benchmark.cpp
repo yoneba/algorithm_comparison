@@ -13,7 +13,7 @@ void benchmark(const auto &problem)
     using namespace std::chrono;
     auto &[points, n_points] = problem;
 #if MEASUREMENT
-    Concyclic::measurements = Concyclic::measurements::measurements();
+    Concyclic::measurements.reset();
 #endif
     std::cerr << Concyclic::name() << ' ' << std::flush;
     time_point<high_resolution_clock> tick = high_resolution_clock::now();

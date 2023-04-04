@@ -29,6 +29,11 @@ namespace sorting
             long long sort_called = 0;
             long long partial_sort_called = 0;
 
+            void reset()
+            {
+                *this = measurements();
+            }
+
             void print(const char *prefix = "") const
             {
                 std::cout << prefix << sort_called << " times" << std::endl;
@@ -180,11 +185,12 @@ namespace sorting
             long long sort_called = 0;
             long long partial_sort_called = 0;
 
-            measurements()
+            void reset()
             {
-                quick::measurements = quick::measurements::measurements();
-                insertion::measurements = insertion::measurements::measurements();
-                heap<>::measurements = heap<>::measurements::measurements();
+                *this = measurements();
+                quick::measurements.reset();
+                insertion::measurements.reset();
+                heap<>::measurements.reset();
             }
 
             void print(const char *prefix = "") const

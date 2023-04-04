@@ -31,9 +31,9 @@ namespace concyclic
 #if MEASUREMENT
         static inline struct measurements
         {
-            measurements()
+            void reset()
             {
-                Sorting::measurements = Sorting::measurements::measurements();
+                Sorting::measurements.reset();
             }
 
             void print(const char *prefix = "") const
@@ -101,6 +101,11 @@ namespace concyclic
             long long comparison = 0;
             long long item_moved = 0;
             long long selection_executed = 0;
+
+            void reset()
+            {
+                *this = measurements();
+            }
 
             void print(const char *prefix = "") const
             {

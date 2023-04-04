@@ -157,6 +157,11 @@ namespace priority_queue
             long long remove_top_called = 0;
             long long remove_called = 0;
 
+            void reset()
+            {
+                *this = measurements();
+            }
+
             void print(const char *prefix = "") const
             {
                 std::cout << prefix << "constructor_called = " << constructor_called << std::endl;

@@ -23,6 +23,11 @@ namespace sorting
             long long sort_called = 0;
             long long partial_sort_called = 0;
 
+            void reset()
+            {
+                *this = measurements();
+            }
+
             void print(const char *prefix = "") const
             {
                 std::cout << prefix << "Cannot measure operation counts." << std::endl;

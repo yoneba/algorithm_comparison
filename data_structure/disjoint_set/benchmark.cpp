@@ -14,7 +14,7 @@ void benchmark(const auto &problem)
     auto &[queries, n_elements, n_queries] = problem;
     int result = 0;
 #if MEASUREMENT
-    DisjointSet::measurements = DisjointSet::measurements::measurements();
+    DisjointSet::measurements.reset();
 #endif
     std::cerr << DisjointSet::name() << ' ' << std::flush;
     time_point<high_resolution_clock> tick = high_resolution_clock::now();

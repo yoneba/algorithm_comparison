@@ -100,6 +100,11 @@ namespace priority_queue
             long long bucket_scan = 0;
             long long comparison = 0;
 
+            void reset()
+            {
+                *this = measurements();
+            }
+
             void print(const char *prefix = "") const
             {
                 std::cout << prefix << "constructor_called = " << constructor_called << std::endl;
@@ -438,9 +443,10 @@ namespace priority_queue
         {
             long long insert_called = 0;
 
-            measurements()
+            void reset()
             {
-                node::measurements = node::measurements::measurements();
+                *this = measurements();
+                node::measurements.reset();
             }
 
             void print(const char *prefix = "") const

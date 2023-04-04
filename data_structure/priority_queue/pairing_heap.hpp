@@ -143,6 +143,11 @@ namespace priority_queue
             long long nodes_expanded() const { return consolidate_called + left_to_right_merger + right_to_left_merger; }
             long long comparison = 0;
 
+            void reset()
+            {
+                *this = measurements();
+            }
+
             void print(const char *prefix = "") const
             {
                 std::cout << prefix << "constructor_called = " << constructor_called << std::endl;
@@ -363,9 +368,9 @@ namespace priority_queue
 #if MEASUREMENT
         static inline struct measurements
         {
-            measurements()
+            void reset()
             {
-                node::measurements = node::measurements::measurements();
+                node::measurements.reset();
             }
 
             void print(const char *prefix = "") const
@@ -466,9 +471,9 @@ namespace priority_queue
 #if MEASUREMENT
         static inline struct measurements
         {
-            measurements()
+            void reset()
             {
-                node::measurements = node::measurements::measurements();
+                node::measurements.reset();
             }
 
             void print(const char *prefix = "") const
