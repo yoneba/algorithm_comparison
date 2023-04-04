@@ -55,11 +55,11 @@ namespace concyclic
             validate_input_size(WidthLimit, HeightLimit, n_points);
             for (int i = 0; i < n_points; i++)
             {
-                std::complex<int> p;
+                std::complex<T> p;
                 std::cin >> p;
                 if (p.real() < 0 || p.imag() < 0 || p.real() >= WidthLimit || p.imag() >= HeightLimit)
                     throw std::out_of_range(std::format("points must be in the range of [0, {}] * [0, {})", WidthLimit, HeightLimit));
-                points[i] = point<T>(static_cast<T>(p.real()), static_cast<T>(p.imag()));
+                points[i] = point<T>(std::floor(p.real()), std::floor(p.imag()));
             }
             std::cin.exceptions(std::ios::goodbit);
             std::cin.tie(&std::cout);

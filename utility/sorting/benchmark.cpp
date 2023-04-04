@@ -12,7 +12,7 @@ void benchmark(const auto &problem)
 {
     using namespace std::chrono;
     auto &[items, n_items] = problem;
-    using item_type = typename std::remove_const<typename std::remove_reference<decltype(problem.items[0])>::type>::type;
+    using item_type = typename std::remove_const<typename std::remove_reference<decltype(items[0])>::type>::type;
     item_type *result = new item_type[n_items];
     for (int i = 0; i < n_items; i++)
         result[i] = items[i];

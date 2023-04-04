@@ -2,7 +2,6 @@
 
 #include "problem.hpp"
 #include "inscribed_angle_approach.hpp"
-#include "../../utility/sorting/index.hpp"
 
 #include <iostream>
 #include <chrono>

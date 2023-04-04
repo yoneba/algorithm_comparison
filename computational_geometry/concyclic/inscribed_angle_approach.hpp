@@ -2,6 +2,7 @@
 #define CONCYCLIC_INSCRIBED_ANGLE_APPROACH_HPP
 
 #include "basic.hpp"
+#include "../../utility/sorting/index.hpp"
 
 #include <format>
 #include <concepts>
