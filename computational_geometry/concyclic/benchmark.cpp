@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
     {
         benchmark<concyclic::inscribed_angle_sorting<sorting::insertion>>(problem);
         benchmark<concyclic::inscribed_angle_sorting<sorting::insertion_look_ahead>>(problem);
+        benchmark<concyclic::inscribed_angle_sorting<sorting::insertion_after_bubbling>>(problem);
         benchmark<concyclic::inscribed_angle_selection>(problem);
     }
 }

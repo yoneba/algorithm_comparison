@@ -50,10 +50,11 @@ int main(int argc, char *argv[])
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
     }
-    if (problem.n_items <= 10000)
+    if (problem.n_items <= 100000)
     {
         benchmark<sorting::insertion>(problem);
         benchmark<sorting::insertion_look_ahead>(problem);
+        benchmark<sorting::insertion_after_bubbling>(problem);
     }
     benchmark<sorting::heap<3, sorting::sift_down_strategy::normal>>(problem);
     benchmark<sorting::heap<3, sorting::sift_down_strategy::bounce>>(problem);
