@@ -1,6 +1,6 @@
 #define MEASUREMENT true
 
-#include "union_find.hpp"
+#include "forest.hpp"
 #include "problem.hpp"
 
 #include <iostream>
@@ -14,9 +14,9 @@ void benchmark(const auto &problem)
     auto &[queries, n_elements, n_queries] = problem;
     int result = 0;
 #if MEASUREMENT
-    DisjointSet::measurements.reset();
+    DisjointSet::measurements.clear();
 #endif
-    std::cerr << DisjointSet::name() << ' ' << std::flush;
+    std::cerr << DisjointSet::full_name() << ' ' << std::flush;
     time_point<high_resolution_clock> tick = high_resolution_clock::now();
     DisjointSet disjoint_set(n_elements);
     for (int i = 0; i < n_queries; i++)
@@ -35,7 +35,7 @@ void benchmark(const auto &problem)
     std::cerr << duration_cast<duration<double>>(high_resolution_clock::now() - tick).count() << " sec" << std::endl;
     std::cout << result << std::endl;
 #if MEASUREMENT
-    DisjointSet::measurements.println("  ");
+    DisjointSet::measurements.println();
 #endif
 }
 
@@ -58,12 +58,22 @@ int main(int argc, char *argv[])
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
     }
-    benchmark<union_find_forest_aos<find_strategy::nothing_special>>(problem);
-    benchmark<union_find_forest_aos<find_strategy::path_compression>>(problem);
-    benchmark<union_find_forest_aos<find_strategy::path_halving>>(problem);
-    benchmark<union_find_forest_aos<find_strategy::path_halving_eager>>(problem);
-    benchmark<union_find_forest<find_strategy::nothing_special>>(problem);
-    benchmark<union_find_forest<find_strategy::path_compression>>(problem);
-    benchmark<union_find_forest<find_strategy::path_halving>>(problem);
-    benchmark<union_find_forest<find_strategy::path_halving_eager>>(problem);
+    if (static_cast<long long>(problem.n_elements) * problem.n_queries <= 10000000000)
+        benchmark<forest_aos<in_tree, path_preserving>>(problem);
+    benchmark<forest_aos<in_tree, path_compression>>(problem);
+    benchmark<forest_aos<in_tree, path_halving>>(problem);
+    benchmark<forest_aos<in_tree, path_halving_dull>>(problem);
+    benchmark<forest_aos<ranked_in_tree, path_preserving>>(problem);
+    benchmark<forest_aos<ranked_in_tree, path_compression>>(problem);
+    benchmark<forest_aos<ranked_in_tree, path_halving>>(problem);
+    benchmark<forest_aos<ranked_in_tree, path_halving_dull>>(problem);
+    if (static_cast<long long>(problem.n_elements) * problem.n_queries <= 10000000000)
+        benchmark<forest_soa<path_preserving>>(problem);
+    benchmark<forest_soa<path_compression>>(problem);
+    benchmark<forest_soa<path_halving>>(problem);
+    benchmark<forest_soa<path_halving_dull>>(problem);
+    benchmark<ranked_forest_soa<path_preserving>>(problem);
+    benchmark<ranked_forest_soa<path_compression>>(problem);
+    benchmark<ranked_forest_soa<path_halving>>(problem);
+    benchmark<ranked_forest_soa<path_halving_dull>>(problem);
 }

@@ -1,4 +1,4 @@
-#include "union_find.hpp"
+#include "forest.hpp"
 
 #include <assert.h>
 
@@ -38,12 +38,20 @@ void test_disjoint_set()
 int main()
 {
     using namespace disjoint_set;
-    test_disjoint_set<union_find_forest_aos<find_strategy::nothing_special>>();
-    test_disjoint_set<union_find_forest_aos<find_strategy::path_compression>>();
-    test_disjoint_set<union_find_forest_aos<find_strategy::path_halving>>();
-    test_disjoint_set<union_find_forest_aos<find_strategy::path_halving_eager>>();
-    test_disjoint_set<union_find_forest<find_strategy::nothing_special>>();
-    test_disjoint_set<union_find_forest<find_strategy::path_compression>>();
-    test_disjoint_set<union_find_forest<find_strategy::path_halving>>();
-    test_disjoint_set<union_find_forest<find_strategy::path_halving_eager>>();
+    test_disjoint_set<forest_aos<in_tree, path_preserving>>();
+    test_disjoint_set<forest_aos<in_tree, path_compression>>();
+    test_disjoint_set<forest_aos<in_tree, path_halving>>();
+    test_disjoint_set<forest_aos<in_tree, path_halving_dull>>();
+    test_disjoint_set<forest_aos<ranked_in_tree, path_preserving>>();
+    test_disjoint_set<forest_aos<ranked_in_tree, path_compression>>();
+    test_disjoint_set<forest_aos<ranked_in_tree, path_halving>>();
+    test_disjoint_set<forest_aos<ranked_in_tree, path_halving_dull>>();
+    test_disjoint_set<forest_soa<path_preserving>>();
+    test_disjoint_set<forest_soa<path_compression>>();
+    test_disjoint_set<forest_soa<path_halving>>();
+    test_disjoint_set<forest_soa<path_halving_dull>>();
+    test_disjoint_set<ranked_forest_soa<path_preserving>>();
+    test_disjoint_set<ranked_forest_soa<path_compression>>();
+    test_disjoint_set<ranked_forest_soa<path_halving>>();
+    test_disjoint_set<ranked_forest_soa<path_halving_dull>>();
 }
