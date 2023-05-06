@@ -1,14 +1,15 @@
 #ifndef SOTRING_MERGE_SORT_HPP
 #define SOTRING_MERGE_SORT_HPP
 
+#if MEASUREMENT
+#include "../common/operation_counting.hpp"
+#endif
+
 #include "insertion_sort.hpp"
 
 #include <utility>
 #include <functional>
 #include <format>
-#if MEASUREMENT
-#include <iostream>
-#endif
 
 namespace sorting
 {
@@ -22,33 +23,19 @@ namespace sorting
             return std::format("merge<{}>", ThresholdOfSwitching);
         }
 #if MEASUREMENT
-        static inline struct measurements
+        static inline struct operation_counter : public common::operation_counter
         {
-            long long comparison = 0;
-            long long item_moved = 0;
-            long long combine_called = 0;
-            long long sort_called = 0;
-
-            void reset()
+            void clear()
             {
-                *this = measurements();
-                insertion::measurements.reset();
+                common::operation_counter::clear();
+                insertion::measurements.clear();
             }
-
-            void print(const char *prefix = "") const
+            virtual void print()
             {
-                std::cout << "[merge] " << sort_called << " times" << std::endl;
-                std::cout << prefix << "comparison = " << comparison << std::endl;
-                std::cout << prefix << "item_moved = " << item_moved << std::endl;
-                std::cout << prefix << "combine_called = " << combine_called << std::endl;
-                std::cout << "[insertion] " << insertion::measurements.sort_called << " times" << std::endl;
-                insertion::measurements.print(prefix);
-            }
-
-            void println(const char *prefix = "") const
-            {
-                print(prefix);
-                std::cout << std::endl;
+                std::cout << "[merge] " << (*this)["sort_called"] << " times" << std::endl;
+                common::operation_counter::print({"comparison", "item_moved", "combine_called"});
+                std::cout << "[insertion] " << insertion::measurements["sort_called"] << " times" << std::endl;
+                insertion::measurements.print();
             }
         } measurements;
 #endif
@@ -57,8 +44,8 @@ namespace sorting
         static void combine(T *s1, T *t1, T *s2, T *t2, T *res, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.combine_called;
-            ++measurements.comparison;
+            ++measurements["combine_called"];
+            ++measurements["comparison"];
 #endif
             if (cmp(t2[-1], t1[-1]))
                 std::swap(s1, s2), std::swap(t1, t2);
@@ -66,8 +53,8 @@ namespace sorting
             {
                 *res++ = cmp(*s2, *s1) ? *s2++ : *s1++;
 #if MEASUREMENT
-                ++measurements.comparison;
-                ++measurements.item_moved;
+                ++measurements["comparison"];
+                ++measurements["item_moved"];
 #endif
             } while (s1 < t1);
             if (res != s2)
@@ -75,7 +62,7 @@ namespace sorting
                 {
                     *res++ = *s2++;
 #if MEASUREMENT
-                    ++measurements.item_moved;
+                    ++measurements["item_moved"];
 #endif
                 } while (s2 < t2);
         }
@@ -84,7 +71,7 @@ namespace sorting
         static void sort(T *s, T *t, T *temp, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.sort_called;
+            ++measurements["sort_called"];
 #endif
             int half = static_cast<int>(t - s + 1) >> 1, quarter = half >> 1;
             if (quarter < ThresholdOfSwitching >> 2)
@@ -102,7 +89,7 @@ namespace sorting
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.sort_called;
+            ++measurements["sort_called"];
 #endif
             T *temp = new T[(t - s + 1) >> 1];
             sort(s, t, temp, cmp);

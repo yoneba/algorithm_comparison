@@ -1,15 +1,16 @@
 #ifndef SOTRING_QUICK_SORT_HPP
 #define SOTRING_QUICK_SORT_HPP
 
+#if MEASUREMENT
+#include "../common/operation_counting.hpp"
+#endif
+
 #include "insertion_sort.hpp"
 #include "heap_sort.hpp"
 
 #include <utility>
 #include <functional>
 #include <format>
-#if MEASUREMENT
-#include <iostream>
-#endif
 
 namespace sorting
 {
@@ -19,77 +20,57 @@ namespace sorting
         static constexpr std::string name() { return "quick"; }
         static constexpr std::string full_name() { return "quick"; }
 #if MEASUREMENT
-        static inline struct measurements
+        static inline struct operation_counter : public common::operation_counter
         {
-            long long comparison = 0;
-            long long item_moved = 0;
-            long long partition_called = 0;
-            long long sort_called = 0;
-            long long partial_sort_called = 0;
-
-            void reset()
-            {
-                *this = measurements();
-            }
-
-            void print(const char *prefix = "") const
-            {
-                std::cout << prefix << sort_called << " times" << std::endl;
-                std::cout << prefix << "comparison = " << comparison << std::endl;
-                std::cout << prefix << "item_moved = " << item_moved << std::endl;
-                std::cout << prefix << "partition_called = " << partition_called << std::endl;
-            }
-
-            void println(const char *prefix = "") const
-            {
-                print(prefix);
-                std::cout << std::endl;
-            }
+            virtual void print() { common::operation_counter::print({"comparison", "item_moved", "partition_called"}); }
         } measurements;
 #endif
 
         template <typename T, class Predicate = std::less<T>>
         static T *partition(T *s, T *t, const Predicate &cmp = Predicate())
         {
+#if MEASUREMENT
+            ++measurements["partition_called"];
+#endif
             T *p = s + ((t - s) >> 1), pivot;
             p = cmp(*s, t[-1]) ? cmp(*s, *p) ? cmp(*p, t[-1]) ? p : t - 1 : s : cmp(*p, *s) ? cmp(t[-1], *p) ? p : t - 1
                                                                                             : s;
 #if MEASUREMENT
-            measurements.comparison += p == s ? 2 : 3;
+            measurements["comparison"] += p == s ? 2 : 3;
 #endif
             pivot = *p, *p = *s, p = s;
             while (true)
             {
 #if MEASUREMENT
-                ++measurements.comparison;
+                ++measurements["comparison"];
 #endif
                 while (cmp(*(++s), pivot))
                 {
 #if MEASUREMENT
-                    ++measurements.comparison;
+                    ++measurements["comparison"];
 #endif
                 }
 #if MEASUREMENT
-                ++measurements.comparison;
+                ++measurements["comparison"];
 #endif
                 while (cmp(pivot, *(--t)))
                 {
 #if MEASUREMENT
-                    ++measurements.comparison;
+                    ++measurements["comparison"];
 #endif
                 }
                 if (t <= s)
                     [[unlikely]]
                 {
 #if MEASUREMENT
-                    measurements.item_moved += 2;
+                    measurements["item_moved"] += 2;
 #endif
                     *p = *t;
                     *t = pivot;
                     return t;
                 }
 #if MEASUREMENT
-                measurements.item_moved += 2;
+                measurements["item_moved"] += 2;
 #endif
                 std::swap(*s, *t);
             }
@@ -103,12 +84,12 @@ namespace sorting
                 if (t - s == 2)
                 {
 #if MEASUREMENT
-                    ++measurements.comparison;
+                    ++measurements["comparison"];
 #endif
                     if (cmp(*w, *s))
                     {
 #if MEASUREMENT
-                        measurements.item_moved += 2;
+                        measurements["item_moved"] += 2;
 #endif
                         std::swap(*w, *s);
                     }
@@ -126,17 +107,17 @@ namespace sorting
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.sort_called;
+            ++measurements["sort_called"];
 #endif
             if (t - s <= 2)
             {
 #if MEASUREMENT
-                ++measurements.comparison;
+                measurements["comparison"] += t - s == 2;
 #endif
                 if (t - s == 2 && cmp(*t, *s))
                 {
 #if MEASUREMENT
-                    measurements.item_moved += 2;
+                    measurements["item_moved"] += 2;
 #endif
                     std::swap(*t, *s);
                 }
@@ -151,7 +132,7 @@ namespace sorting
         static void partial_sort(T *s, T *w, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.partial_sort_called;
+            ++measurements["partial_sort_called"];
 #endif
             while (s < w && w < t)
             {
@@ -179,33 +160,23 @@ namespace sorting
             return std::format("intro<{}>", ThresholdOfSwitching);
         }
 #if MEASUREMENT
-        static inline struct measurements
+        static inline struct operation_counter : public common::operation_counter
         {
-            long long sort_called = 0;
-            long long partial_sort_called = 0;
-
-            void reset()
+            void clear()
             {
-                *this = measurements();
-                quick::measurements.reset();
-                insertion::measurements.reset();
-                heap<>::measurements.reset();
+                common::operation_counter::clear();
+                quick::measurements.clear();
+                insertion::measurements.clear();
+                heap<>::measurements.clear();
             }
-
-            void print(const char *prefix = "") const
+            virtual void print()
             {
-                std::cout << "[quick] " << sort_called << " times" << std::endl;
-                quick::measurements.print(prefix);
-                std::cout << "[insertion] " << insertion::measurements.sort_called << " times" << std::endl;
-                insertion::measurements.print(prefix);
-                std::cout << "[heap] " << heap<>::measurements.sort_called << " times" << std::endl;
-                heap<>::measurements.print(prefix);
-            }
-
-            void println(const char *prefix = "") const
-            {
-                print(prefix);
-                std::cout << std::endl;
+                std::cout << "[quick] " << (*this)["sort_called"] << " times" << std::endl;
+                quick::measurements.print();
+                std::cout << "[insertion] " << insertion::measurements["sort_called"] << " times" << std::endl;
+                insertion::measurements.print();
+                std::cout << "[heap] " << heap<>::measurements["sort_called"] << " times" << std::endl;
+                heap<>::measurements.print();
             }
         } measurements;
 #endif
@@ -214,7 +185,7 @@ namespace sorting
         static void sort(T *s, T *t, const Predicate &cmp = Predicate(), int hold = 48)
         {
 #if MEASUREMENT
-            ++measurements.sort_called;
+            ++measurements["sort_called"];
 #endif
             if (t - s < ThresholdOfSwitching)
                 return insertion::sort(s, t, cmp);
@@ -230,7 +201,7 @@ namespace sorting
         static void partial_sort(T *s, T *w, T *t, const Predicate &cmp = Predicate(), int hold = 32)
         {
 #if MEASUREMENT
-            ++measurements.partial_sort_called;
+            ++measurements["partial_sort_called"];
 #endif
             while (s < w && w < t)
             {

@@ -1,11 +1,12 @@
 #ifndef SOTRING_HEAP_SORT_HPP
 #define SOTRING_HEAP_SORT_HPP
 
+#if MEASUREMENT
+#include "../common/operation_counting.hpp"
+#endif
+
 #include <functional>
 #include <format>
-#if MEASUREMENT
-#include <iostream>
-#endif
 
 namespace sorting
 {
@@ -38,34 +39,11 @@ namespace sorting
             return std::format("heap<{}, {}>", Degree, to_string(SiftDownStrategy));
         }
 #if MEASUREMENT
-        static inline struct measurements
+        static inline struct operation_counter : public common::operation_counter
         {
-            long long comparison = 0;
-            long long item_moved = 0;
-            long long sift_up_called = 0;
-            long long sift_down_called = 0;
-            long long heapify_called = 0;
-            long long sort_called = 0;
-            long long partial_sort_called = 0;
-
-            void reset()
+            virtual void print()
             {
-                *this = measurements();
-            }
-
-            void print(const char *prefix = "") const
-            {
-                std::cout << prefix << "comparison = " << comparison << std::endl;
-                std::cout << prefix << "item_moved = " << item_moved << std::endl;
-                std::cout << prefix << "sift_up_called = " << sift_up_called << std::endl;
-                std::cout << prefix << "sift_down_called = " << sift_down_called << std::endl;
-                std::cout << prefix << "heapify_called = " << heapify_called << std::endl;
-            }
-
-            void println(const char *prefix = "") const
-            {
-                print(prefix);
-                std::cout << std::endl;
+                common::operation_counter::print({"comparison", "item_moved", "sift_up_called", "sift_down_called", "heapify_called"});
             }
         } measurements;
 #endif
@@ -87,7 +65,7 @@ namespace sorting
         static int finest_sibling_among(T *h, int n, int c, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            measurements.comparison += Degree - 1;
+            measurements["comparison"] += Degree - 1;
 #endif
             if constexpr (Degree == 2)
             {
@@ -144,19 +122,19 @@ namespace sorting
         static void sift_up(T *h, int c, T a, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.sift_up_called;
-            ++measurements.comparison;
+            ++measurements["sift_up_called"];
+            measurements["comparison"] += c < 0;
 #endif
             for (int p = parent_of(c); c < 0 && cmp(a, h[p]); c = p, p = parent_of(c))
             {
 #if MEASUREMENT
-                ++measurements.item_moved;
-                ++measurements.comparison;
+                ++measurements["item_moved"];
+                measurements["comparison"] += c < 0;
 #endif
                 h[c] = h[p];
             }
 #if MEASUREMENT
-            ++measurements.item_moved;
+            ++measurements["item_moved"];
 #endif
             h[c] = a;
         }
@@ -168,17 +146,17 @@ namespace sorting
             {
                 c = finest_sibling_among(h, n, c, cmp);
 #if MEASUREMENT
-                ++measurements.comparison;
+                ++measurements["comparison"];
 #endif
                 if (!cmp(h[c], a))
                     break;
 #if MEASUREMENT
-                ++measurements.item_moved;
+                ++measurements["item_moved"];
 #endif
                 h[r] = h[c];
             }
 #if MEASUREMENT
-            ++measurements.item_moved;
+            ++measurements["item_moved"];
 #endif
             h[r] = a;
         }
@@ -190,7 +168,7 @@ namespace sorting
             {
                 c = finest_sibling_among(h, n, c, cmp);
 #if MEASUREMENT
-                ++measurements.item_moved;
+                ++measurements["item_moved"];
 #endif
                 h[r] = h[c];
             }
@@ -209,7 +187,7 @@ namespace sorting
         static void sift_down(T *h, int n, T a, const Predicate &cmp = Predicate(), int r = 0)
         {
 #if MEASUREMENT
-            ++measurements.sift_down_called;
+            ++measurements["sift_down_called"];
 #endif
             if constexpr (SiftDownStrategy == sift_down_strategy::bounce)
                 sift_down_with_bounce(h, n, a, cmp, r);
@@ -227,7 +205,7 @@ namespace sorting
         static void heapify(T *h, int n, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.heapify_called;
+            ++measurements["heapify_called"];
 #endif
             for (int i = parent_of(n + 1); i <= 0; i++)
                 sift_down(h, n, h[i], cmp, i);
@@ -237,7 +215,7 @@ namespace sorting
         static void partial_sort(T *s, T *w, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.partial_sort_called;
+            ++measurements["partial_sort_called"];
 #endif
             heapify(t - 1, s - t, cmp);
             while (++s <= w)
@@ -252,7 +230,7 @@ namespace sorting
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.sort_called;
+            ++measurements["sort_called"];
 #endif
             heapify(t - 1, s - t, cmp);
             while (++s < t)

@@ -1,12 +1,13 @@
 #ifndef SOTRING_STD_SORT_HPP
 #define SOTRING_STD_SORT_HPP
 
+#if MEASUREMENT
+#include "../common/operation_counting.hpp"
+#endif
+
 #include <functional>
 #include <algorithm>
 #include <string>
-#if MEASUREMENT
-#include <iostream>
-#endif
 
 namespace sorting
 {
@@ -16,26 +17,9 @@ namespace sorting
         static constexpr std::string name() { return "stl"; }
         static constexpr std::string full_name() { return "stl"; }
 #if MEASUREMENT
-        static inline struct measurements
+        static inline struct operation_counter : public common::operation_counter
         {
-            long long sort_called = 0;
-            long long partial_sort_called = 0;
-
-            void reset()
-            {
-                *this = measurements();
-            }
-
-            void print(const char *prefix = "") const
-            {
-                std::cout << prefix << "Cannot measure operation counts." << std::endl;
-            }
-
-            void println(const char *prefix = "") const
-            {
-                print(prefix);
-                std::cout << std::endl;
-            }
+            virtual void print() { std::cout << "Cannot measure operation counts." << std::endl; }
         } measurements;
 #endif
 
@@ -43,7 +27,7 @@ namespace sorting
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.sort_called;
+            ++measurements["sort_called"];
 #endif
             std::sort(s, t, cmp);
         }
@@ -52,7 +36,7 @@ namespace sorting
         static void partial_sort(T *s, T *w, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
-            ++measurements.partial_sort_called;
+            ++measurements["partial_sort_called"];
 #endif
             std::partial_sort(s, w, t, cmp);
         }

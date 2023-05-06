@@ -1,14 +1,15 @@
 #ifndef CONCYCLIC_INSCRIBED_ANGLE_APPROACH_HPP
 #define CONCYCLIC_INSCRIBED_ANGLE_APPROACH_HPP
 
+#if MEASUREMENT
+#include "../../utility/common/operation_counting.hpp"
+#endif
+
 #include "basic.hpp"
 #include "../../utility/sorting/index.hpp"
 
 #include <format>
 #include <concepts>
-#if MEASUREMENT
-#include <iostream>
-#endif
 
 namespace concyclic
 {
@@ -30,24 +31,14 @@ namespace concyclic
             return std::format("inscribed_angle_sorting<{}>", Sorting::full_name());
         }
 #if MEASUREMENT
-        static inline struct measurements
+        static inline struct operation_counter : public common::operation_counter
         {
-            void reset()
+            void clear()
             {
-                Sorting::measurements.reset();
+                common::operation_counter::clear();
+                Sorting::measurements.clear();
             }
-
-            void print(const char *prefix = "") const
-            {
-                std::cout << prefix << "sort_called = " << Sorting::measurements.sort_called << std::endl;
-                Sorting::measurements.print(prefix);
-            }
-
-            void println(const char *prefix = "") const
-            {
-                print(prefix);
-                std::cout << std::endl;
-            }
+            virtual void print() { Sorting::measurements.print(); }
         } measurements;
 #endif
 
@@ -95,29 +86,9 @@ namespace concyclic
         static constexpr std::string name() { return "inscribed_angle_selection"; }
         static constexpr std::string full_name() { return "inscribed_angle_selection"; }
 #if MEASUREMENT
-        static inline struct measurements
+        static inline struct operation_counter : public common::operation_counter
         {
-            long long comparison = 0;
-            long long item_moved = 0;
-            long long selection_executed = 0;
-
-            void reset()
-            {
-                *this = measurements();
-            }
-
-            void print(const char *prefix = "") const
-            {
-                std::cout << prefix << "comparison = " << comparison << std::endl;
-                std::cout << prefix << "item_moved = " << item_moved << std::endl;
-                std::cout << prefix << "selection_executed = " << selection_executed << std::endl;
-            }
-
-            void println(const char *prefix = "") const
-            {
-                print(prefix);
-                std::cout << std::endl;
-            }
+            virtual void print() { common::operation_counter::print({"comparison", "item_moved", "selection_executed"}); }
         } measurements;
 #endif
 
@@ -133,7 +104,7 @@ namespace concyclic
                     for (int k = 0; k < j; k++)
                         tangents[k] = find_tan_inscribed_angle(points[i], points[j], points[k]);
 #if MEASUREMENT
-                    ++measurements.selection_executed;
+                    ++measurements["selection_executed"];
 #endif
                     for (T *tail = tangents + j - 1; tail > tangents; tail--)
                     {
@@ -141,12 +112,12 @@ namespace concyclic
                         for (T *head = tangents; head < tail; head++)
                         {
 #if MEASUREMENT
-                            ++measurements.comparison;
+                            ++measurements["comparison"];
 #endif
                             if (*head == angle)
                             {
 #if MEASUREMENT
-                                ++measurements.item_moved;
+                                ++measurements["item_moved"];
 #endif
                                 *(head--) = *(--tail);
                             }

@@ -17,7 +17,7 @@ void benchmark(const auto &problem)
     for (int i = 0; i < n_items; i++)
         result[i] = items[i];
 #if MEASUREMENT
-    Sorting::measurements.reset();
+    Sorting::measurements.clear();
 #endif
     std::cerr << Sorting::full_name() << ' ' << std::flush;
     time_point<high_resolution_clock> tick = high_resolution_clock::now();
