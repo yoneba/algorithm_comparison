@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     static concyclic::problem<double, width_limit, height_limit, n_points_limit> problem;
     try
     {
-        if (argc <= 1)
+        if (argc == 2 && argv[1] == std::string("-"))
             problem.read_from_stdin();
         else if (argc != 4)
             throw std::invalid_argument("usage: ./benchmark.out {width} {height} {#points}");

@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     static sorting::problem<double, n_items_limit> problem;
     try
     {
-        if (argc <= 1)
+        if (argc == 2 && argv[1] == std::string("-"))
             problem.read_from_stdin();
         else if (argc != 2)
             throw std::invalid_argument("usage: ./benchmark.out {#items}");

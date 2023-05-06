@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     static problem<N_ELEMENTS, N_QUERIES> problem;
     try
     {
-        if (argc <= 1)
+        if (argc == 2 && argv[1] == std::string("-"))
             problem.read_from_stdin();
         else if (argc != 3)
             throw std::invalid_argument("usage: ./benchmark.out {#elements} {#queries}");
