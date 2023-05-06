@@ -13,10 +13,8 @@ namespace sorting
     class stl
     {
     public:
-        static constexpr std::string name()
-        {
-            return "stl";
-        }
+        static constexpr std::string name() { return "stl"; }
+        static constexpr std::string full_name() { return "stl"; }
 #if MEASUREMENT
         static inline struct measurements
         {

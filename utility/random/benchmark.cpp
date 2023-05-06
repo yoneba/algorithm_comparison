@@ -10,7 +10,7 @@ template <class Random>
 void benchmark(long long range, long long howmany, long long result[])
 {
     using namespace std::chrono;
-    std::cerr << Random::name() << ' ' << std::flush;
+    std::cerr << Random::full_name() << ' ' << std::flush;
 #if MEASUREMENT
 #endif
     time_point<high_resolution_clock> tick = high_resolution_clock::now();

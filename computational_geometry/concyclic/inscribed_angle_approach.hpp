@@ -24,9 +24,10 @@ namespace concyclic
     class inscribed_angle_sorting
     {
     public:
-        static constexpr std::string name()
+        static constexpr std::string name() { return "inscribed_angle_sorting"; }
+        static constexpr std::string full_name()
         {
-            return std::format("inscribed_angle_sorting<{}>", Sorting::name());
+            return std::format("inscribed_angle_sorting<{}>", Sorting::full_name());
         }
 #if MEASUREMENT
         static inline struct measurements
@@ -91,10 +92,8 @@ namespace concyclic
     class inscribed_angle_selection
     {
     public:
-        static constexpr std::string name()
-        {
-            return "inscribed_angle_selection";
-        }
+        static constexpr std::string name() { return "inscribed_angle_selection"; }
+        static constexpr std::string full_name() { return "inscribed_angle_selection"; }
 #if MEASUREMENT
         static inline struct measurements
         {

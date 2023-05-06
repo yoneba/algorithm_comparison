@@ -16,7 +16,8 @@ namespace sorting
     class merge
     {
     public:
-        static constexpr std::string name()
+        static constexpr std::string name() { return "merge"; }
+        static constexpr std::string full_name()
         {
             return std::format("merge<{}>", ThresholdOfSwitching);
         }

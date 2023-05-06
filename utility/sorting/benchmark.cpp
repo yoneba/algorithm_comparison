@@ -19,7 +19,7 @@ void benchmark(const auto &problem)
 #if MEASUREMENT
     Sorting::measurements.reset();
 #endif
-    std::cerr << Sorting::name() << ' ' << std::flush;
+    std::cerr << Sorting::full_name() << ' ' << std::flush;
     time_point<high_resolution_clock> tick = high_resolution_clock::now();
     Sorting::sort(result, result + n_items);
     std::cerr << duration_cast<duration<double>>(high_resolution_clock::now() - tick).count() << " sec" << std::endl;

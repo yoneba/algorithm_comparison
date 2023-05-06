@@ -16,10 +16,8 @@ namespace sorting
     class quick
     {
     public:
-        static constexpr std::string name()
-        {
-            return "quick";
-        }
+        static constexpr std::string name() { return "quick"; }
+        static constexpr std::string full_name() { return "quick"; }
 #if MEASUREMENT
         static inline struct measurements
         {
@@ -175,7 +173,8 @@ namespace sorting
     class intro
     {
     public:
-        static constexpr std::string name()
+        static constexpr std::string name() { return "intro"; }
+        static constexpr std::string full_name()
         {
             return std::format("intro<{}>", ThresholdOfSwitching);
         }

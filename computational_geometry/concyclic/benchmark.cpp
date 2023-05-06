@@ -15,7 +15,7 @@ void benchmark(const auto &problem)
 #if MEASUREMENT
     Concyclic::measurements.reset();
 #endif
-    std::cerr << Concyclic::name() << ' ' << std::flush;
+    std::cerr << Concyclic::full_name() << ' ' << std::flush;
     time_point<high_resolution_clock> tick = high_resolution_clock::now();
     long long result = Concyclic::count(points, n_points);
     std::cerr << duration_cast<duration<double>>(high_resolution_clock::now() - tick).count() << " sec" << std::endl;

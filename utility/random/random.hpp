@@ -39,10 +39,8 @@ namespace random
     class shuffle
     {
     public:
-        static constexpr std::string name()
-        {
-            return "shuffle";
-        }
+        static constexpr std::string name() { return "shuffle"; }
+        static constexpr std::string full_name() { return "shuffle"; }
 
         template <std::integral T>
         static void sampling(T n, T k, T result[])
@@ -74,10 +72,8 @@ namespace random
     class merge
     {
     public:
-        static constexpr std::string name()
-        {
-            return "merge";
-        }
+        static constexpr std::string name() { return "merge"; }
+        static constexpr std::string full_name() { return "merge"; }
 
         template <std::integral T>
         static void sampling(T n, T k, T result[], T temp[])

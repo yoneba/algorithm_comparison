@@ -32,7 +32,8 @@ namespace sorting
     class heap
     {
     public:
-        static constexpr std::string name()
+        static constexpr std::string name() { return "heap"; }
+        static constexpr std::string full_name()
         {
             return std::format("heap<{}, {}>", Degree, to_string(SiftDownStrategy));
         }
@@ -73,10 +74,7 @@ namespace sorting
         {
             return p * Degree - 1;
         }
-        static constexpr int parent_of(int c)
-        {
-            return (c + 1) / Degree;
-        }
+        static constexpr int parent_of(int c) { return (c + 1) / Degree; }
 
         /**
          *

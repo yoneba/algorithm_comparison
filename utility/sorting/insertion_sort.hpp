@@ -12,10 +12,8 @@ namespace sorting
     class insertion
     {
     public:
-        static constexpr std::string name()
-        {
-            return "insertion";
-        }
+        static constexpr std::string name() { return "insertion"; }
+        static constexpr std::string full_name() { return "insertion"; }
 #if MEASUREMENT
         static inline struct measurements
         {
@@ -78,10 +76,8 @@ namespace sorting
     class insertion_look_ahead
     {
     public:
-        static constexpr std::string name()
-        {
-            return "insertion_look_ahead";
-        }
+        static constexpr std::string name() { return "insertion_look_ahead"; }
+        static constexpr std::string full_name() { return "insertion_look_ahead"; }
 #if MEASUREMENT
         static inline struct measurements
         {
@@ -157,10 +153,8 @@ namespace sorting
     class insertion_after_bubbling
     {
     public:
-        static constexpr std::string name()
-        {
-            return "insertion_after_bubbling";
-        }
+        static constexpr std::string name() { return "insertion_after_bubbling"; }
+        static constexpr std::string full_name() { return "insertion_after_bubbling"; }
 #if MEASUREMENT
         static inline struct measurements
         {
