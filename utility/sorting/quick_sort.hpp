@@ -8,6 +8,7 @@
 #include "insertion_sort.hpp"
 #include "heap_sort.hpp"
 
+#include <concepts>
 #include <utility>
 #include <functional>
 #include <format>
@@ -26,7 +27,7 @@ namespace sorting
         } measurements;
 #endif
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static T *partition(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -76,7 +77,7 @@ namespace sorting
             }
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void split(T *s, T *w, T *t, const Predicate &cmp = Predicate())
         {
             while (s < w && w < t)
@@ -103,7 +104,7 @@ namespace sorting
             }
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -128,7 +129,7 @@ namespace sorting
             sort(p + 1, t, cmp);
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void partial_sort(T *s, T *w, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -181,7 +182,7 @@ namespace sorting
         } measurements;
 #endif
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sort(T *s, T *t, const Predicate &cmp = Predicate(), int hold = 48)
         {
 #if MEASUREMENT
@@ -197,7 +198,7 @@ namespace sorting
             sort(p + 1, t, cmp, hold - 1);
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void partial_sort(T *s, T *w, T *t, const Predicate &cmp = Predicate(), int hold = 32)
         {
 #if MEASUREMENT

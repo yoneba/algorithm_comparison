@@ -5,6 +5,7 @@
 #include "../../utility/common/operation_counting.hpp"
 #endif
 
+#include <concepts>
 #include <string>
 
 namespace priority_queue
@@ -127,7 +128,7 @@ namespace priority_queue
          * @brief called before self will be inserted into the heap.
          * @param key to be assigned to the node.
          */
-        template <class Node, typename T>
+        template <class Node, std::totally_ordered T>
         static void activate(Node *self, T key)
         {
             clear(self);
@@ -284,7 +285,7 @@ namespace priority_queue
          * @param buckets the buckets to maintain the roots of the heap forest.
          * @param key will be set to self->key.
          */
-        template <class Node, typename T>
+        template <class Node, std::totally_ordered T>
         static void improve_key(Node *self, Node *buckets[], T key)
         {
 #if MEASUREMENT
@@ -308,7 +309,7 @@ namespace priority_queue
          * @param buckets the buckets to maintain the roots of the heap forest.
          * @param key will be set to self->key.
          */
-        template <class Node, typename T>
+        template <class Node, std::totally_ordered T>
         static void worsen_key(Node *self, Node *buckets[], T key)
         {
 #if MEASUREMENT
@@ -406,7 +407,7 @@ namespace priority_queue
             return const_cast<Node *>(summit);
         }
 
-        template <typename T>
+        template <std::totally_ordered T>
         class node
         {
             friend class fibonacci;

@@ -5,6 +5,7 @@
 #include "../../utility/common/operation_counting.hpp"
 #endif
 
+#include <concepts>
 #include <string>
 
 namespace priority_queue
@@ -205,7 +206,7 @@ namespace priority_queue
          * @param key will be set to self->key.
          * @return the new root node.
          */
-        template <class Node, typename T>
+        template <class Node, std::totally_ordered T>
         static Node *join(Node *self, Node *r, T key)
         {
 #if MEASUREMENT
@@ -234,7 +235,7 @@ namespace priority_queue
          * @param key will be set to self->key.
          * @return the new root node.
          */
-        template <class Node, typename T>
+        template <class Node, std::totally_ordered T>
         static Node *improve_key(Node *self, Node *r, T key)
         {
 #if MEASUREMENT
@@ -258,7 +259,7 @@ namespace priority_queue
          * @param key will be set to self->key.
          * @return the newly substituted node (possibly self again).
          */
-        template <class Node, typename T>
+        template <class Node, std::totally_ordered T>
         static Node *worsen_key(Node *self, Node *r, T key)
         {
 #if MEASUREMENT
@@ -335,7 +336,7 @@ namespace priority_queue
             return c;
         }
 
-        template <typename T>
+        template <std::totally_ordered T>
         class node
         {
             friend class pairing;

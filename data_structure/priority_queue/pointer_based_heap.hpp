@@ -9,11 +9,12 @@
 #include "rank_pairing_heap.hpp"
 #include "fibonacci_heap.hpp"
 
+#include <concepts>
 #include <format>
 
 namespace priority_queue
 {
-    template <template <template <typename> class> class Modality, template <typename> class PR, typename T>
+    template <template <template <typename> class> class Modality, template <typename> class PR, std::totally_ordered T>
     class monolithic_heap
     {
         using node = typename Modality<PR>::template node<T>;
@@ -108,7 +109,7 @@ namespace priority_queue
         }
     };
 
-    template <template <template <typename> class> class Modality, template <typename> class PR, typename T>
+    template <template <template <typename> class> class Modality, template <typename> class PR, std::totally_ordered T>
     class distributed_heap
     {
         using node = typename Modality<PR>::template node<T>;
@@ -221,7 +222,7 @@ namespace priority_queue
         }
     };
 
-    template <template <template <typename> class> class Modality, template <typename> class PR, typename T>
+    template <template <template <typename> class> class Modality, template <typename> class PR, std::totally_ordered T>
     class monolithic_heap_group
     {
         using node = typename Modality<PR>::template node<T>;
@@ -331,15 +332,15 @@ namespace priority_queue
         }
     };
 
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using pairing_heap = monolithic_heap<pairing, PR, T>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using rank_pairing_heap = distributed_heap<rank_pairing, PR, T>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using fibonacci_heap = distributed_heap<fibonacci, PR, T>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using pairing_heap_group = monolithic_heap_group<pairing, PR, T>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using rank_pairing_heap_group = monolithic_heap_group<rank_pairing, PR, T>;
 }
 

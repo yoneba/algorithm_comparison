@@ -5,6 +5,7 @@
 #include "../common/operation_counting.hpp"
 #endif
 
+#include <concepts>
 #include <functional>
 #include <string>
 
@@ -22,7 +23,7 @@ namespace sorting
         } measurements;
 #endif
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -67,7 +68,7 @@ namespace sorting
         } measurements;
 #endif
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -125,7 +126,7 @@ namespace sorting
         } measurements;
 #endif
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT

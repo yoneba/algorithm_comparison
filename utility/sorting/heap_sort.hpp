@@ -5,6 +5,7 @@
 #include "../common/operation_counting.hpp"
 #endif
 
+#include <concepts>
 #include <functional>
 #include <format>
 
@@ -61,7 +62,7 @@ namespace sorting
          * @param c non positive; the index of the first sibling.
          * @param cmp a comparison function.
          */
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static int finest_sibling_among(T *h, int n, int c, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -118,7 +119,7 @@ namespace sorting
          * @param a an element to be inserted.
          * @param cmp a comparison function.
          */
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sift_up(T *h, int c, T a, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -139,7 +140,7 @@ namespace sorting
             h[c] = a;
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sift_down_normal(T *h, int n, T a, const Predicate &cmp = Predicate(), int r = 0)
         {
             for (int c = first_child_of(r); c > n; r = c, c = first_child_of(r))
@@ -161,7 +162,7 @@ namespace sorting
             h[r] = a;
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sift_down_with_bounce(T *h, int n, T a, const Predicate &cmp = Predicate(), int r = 0)
         {
             for (int c = first_child_of(r); c > n; r = c, c = first_child_of(r))
@@ -183,7 +184,7 @@ namespace sorting
          * @param cmp a comparison function.
          * @param r non positive; the root index to apply sift_down.
          */
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sift_down(T *h, int n, T a, const Predicate &cmp = Predicate(), int r = 0)
         {
 #if MEASUREMENT
@@ -201,7 +202,7 @@ namespace sorting
          * @param n non positive; h[n + 1]..h[0] comprises a heap.
          * @param cmp a comparison function.
          */
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void heapify(T *h, int n, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -211,7 +212,7 @@ namespace sorting
                 sift_down(h, n, h[i], cmp, i);
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void partial_sort(T *s, T *w, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -226,7 +227,7 @@ namespace sorting
             }
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT

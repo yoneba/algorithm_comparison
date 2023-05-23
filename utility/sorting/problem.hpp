@@ -3,13 +3,14 @@
 
 #include "../../utility/random/random.hpp"
 
+#include <concepts>
 #include <iostream>
 #include <string>
 #include <format>
 
 namespace sorting
 {
-    template <typename T, int NItemsLimit>
+    template <std::totally_ordered T, int NItemsLimit>
     struct problem
     {
         T items[NItemsLimit];

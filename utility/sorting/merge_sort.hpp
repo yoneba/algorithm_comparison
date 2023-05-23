@@ -7,6 +7,7 @@
 
 #include "insertion_sort.hpp"
 
+#include <concepts>
 #include <utility>
 #include <functional>
 #include <format>
@@ -40,7 +41,7 @@ namespace sorting
         } measurements;
 #endif
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void combine(T *s1, T *t1, T *s2, T *t2, T *res, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -67,7 +68,7 @@ namespace sorting
                 } while (s2 < t2);
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sort(T *s, T *t, T *temp, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT
@@ -85,7 +86,7 @@ namespace sorting
             combine(temp, temp + half, s + half, t, s, cmp);
         }
 
-        template <typename T, class Predicate = std::less<T>>
+        template <std::totally_ordered T, class Predicate = std::less<T>>
         static void sort(T *s, T *t, const Predicate &cmp = Predicate())
         {
 #if MEASUREMENT

@@ -5,13 +5,14 @@
 #include "../../utility/common/operation_counting.hpp"
 #endif
 
+#include <concepts>
 #include <string>
 #include <format>
 #include <algorithm>
 
 namespace priority_queue
 {
-    template <template <typename> class PR, typename T, int Degree = 0>
+    template <template <typename> class PR, std::totally_ordered T, int Degree = 0>
     class d_ary_heap
     {
         struct item
@@ -233,25 +234,25 @@ namespace priority_queue
         }
     };
 
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using binary_heap = d_ary_heap<PR, T, 2>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using ternary_heap = d_ary_heap<PR, T, 3>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using quaternary_heap = d_ary_heap<PR, T, 4>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using quinary_heap = d_ary_heap<PR, T, 5>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using senary_heap = d_ary_heap<PR, T, 6>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using septenary_heap = d_ary_heap<PR, T, 7>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using octonary_heap = d_ary_heap<PR, T, 8>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using novenary_heap = d_ary_heap<PR, T, 9>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using denary_heap = d_ary_heap<PR, T, 10>;
-    template <template <typename> class PR, typename T>
+    template <template <typename> class PR, std::totally_ordered T>
     using multiary_heap = d_ary_heap<PR, T>;
 }
 
