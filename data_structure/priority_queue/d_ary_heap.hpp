@@ -1,12 +1,13 @@
 #ifndef PRIORITY_QUEUE_D_ARY_HEAP_HPP
 #define PRIORITY_QUEUE_D_ARY_HEAP_HPP
 
+#if MEASUREMENT
+#include "../../utility/common/operation_counting.hpp"
+#endif
+
 #include <string>
 #include <format>
 #include <algorithm>
-#if MEASUREMENT
-#include <iostream>
-#endif
 
 namespace priority_queue
 {
@@ -96,19 +97,19 @@ namespace priority_queue
         void sift_down(int id, T key, int pos = 0) const
         {
 #if MEASUREMENT
-            ++measurements.sift_down_called;
+            ++measurements["sift_down_called"];
 #endif
             for (int child = first_child_of(pos, degree); child < n_active_item; pos = child, child = first_child_of(pos, degree))
             {
 #if MEASUREMENT
-                measurements.comparison_in_sift_down += std::min(n_active_item - child, degree);
+                measurements["comparison_in_sift_down"] += std::min(n_active_item - child, degree);
 #endif
                 child = finest_sibling_among(heap, n_active_item, degree, child);
                 item competitor = heap[child];
                 if (!cmp(competitor.key, key))
                     break;
 #if MEASUREMENT
-                ++measurements.move_down;
+                ++measurements["move_down"];
 #endif
                 heap[pos] = competitor, track[competitor.id] = pos;
             }
@@ -118,14 +119,14 @@ namespace priority_queue
         void sift_up(int id, T key, int pos) const
         {
 #if MEASUREMENT
-            ++measurements.sift_up_called;
-            ++measurements.comparison_in_sift_up;
+            ++measurements["sift_up_called"];
+            ++measurements["comparison_in_sift_up"];
 #endif
             for (int parent = parent_of(pos, degree); pos > 0 && cmp(key, heap[parent].key); pos = parent, parent = parent_of(pos, degree))
             {
 #if MEASUREMENT
-                ++measurements.move_up;
-                ++measurements.comparison_in_sift_up;
+                ++measurements["move_up"];
+                ++measurements["comparison_in_sift_up"];
 #endif
                 heap[pos] = heap[parent], track[heap[pos].id] = pos;
             }
@@ -133,7 +134,8 @@ namespace priority_queue
         }
 
     public:
-        static constexpr std::string name()
+        static constexpr std::string name() { return "d_ary_heap"; }
+        static constexpr std::string full_name()
         {
             if constexpr (Degree > 1)
                 return std::format("d_ary_heap<{}>", Degree);
@@ -141,55 +143,28 @@ namespace priority_queue
                 return "d_ary_heap<dynamic>";
         }
 #if MEASUREMENT
-        static inline struct measurements
+        static inline struct operation_counter : public common::operation_counter
         {
-            long long constructor_called = 0;
-            long long sift_down_called = 0;
-            long long move_down = 0;
-            long long sift_up_called = 0;
-            long long move_up = 0;
-            long long comparison_in_sift_down = 0;
-            long long comparison_in_sift_up = 0;
-            long long comparison() const { return comparison_in_sift_down + comparison_in_sift_up; }
-            long long insert_called = 0;
-            long long improve_key_called = 0;
-            long long worsen_key_called = 0;
-            long long remove_top_called = 0;
-            long long remove_called = 0;
-
-            void reset()
+            virtual void print()
             {
-                *this = measurements();
-            }
-
-            void print(const char *prefix = "") const
-            {
-                std::cout << prefix << "constructor_called = " << constructor_called << std::endl;
-                std::cout << prefix << "sift_down_called = " << sift_down_called << std::endl;
-                std::cout << prefix << " |- move_down = " << move_down << std::endl;
-                std::cout << prefix << "sift_up_called = " << sift_up_called << std::endl;
-                std::cout << prefix << " |- move_up = " << move_up << std::endl;
-                std::cout << prefix << "comparison = " << comparison() << std::endl;
-                std::cout << prefix << " |- comparison_in_sift_down = " << comparison_in_sift_down << std::endl;
-                std::cout << prefix << " |- comparison_in_sift_up = " << comparison_in_sift_up << std::endl;
-                std::cout << prefix << "insert_called = " << insert_called << std::endl;
-                std::cout << prefix << "improve_key_called = " << improve_key_called << std::endl;
-                std::cout << prefix << "worsen_key_called = " << worsen_key_called << std::endl;
-                std::cout << prefix << "remove_top_called = " << remove_top_called << std::endl;
-                std::cout << prefix << "remove_called = " << remove_called << std::endl;
-            }
-
-            void println(const char *prefix = "") const
-            {
-                print(prefix);
-                std::cout << std::endl;
+                common::operation_counter::print({"sift_down_called",
+                                                  "move_down",
+                                                  "sift_up_called",
+                                                  "move_up",
+                                                  "comparison_in_sift_down",
+                                                  "comparison_in_sift_up",
+                                                  "insert_called",
+                                                  "improve_key_called",
+                                                  "worsen_key_called",
+                                                  "remove_top_called",
+                                                  "remove_called"});
             }
         } measurements;
 #endif
         explicit d_ary_heap(int n, int d) : heap(new item[n]), track(new int[n]), n_active_item(0), n_item(n), degree(d)
         {
 #if MEASUREMENT
-            ++measurements.constructor_called;
+            ++measurements["constructor_called"];
 #endif
             for (int i = 0; i < n; i++)
                 track[i] = -1;
@@ -212,7 +187,7 @@ namespace priority_queue
         void insert(int id, T key)
         {
 #if MEASUREMENT
-            ++measurements.insert_called;
+            ++measurements["insert_called"];
 #endif
             sift_up(id, key, n_active_item++);
         }
@@ -220,7 +195,7 @@ namespace priority_queue
         void improve_key(int id, T key) const
         {
 #if MEASUREMENT
-            ++measurements.improve_key_called;
+            ++measurements["improve_key_called"];
 #endif
             sift_up(id, key, track[id]);
         }
@@ -228,7 +203,7 @@ namespace priority_queue
         void worsen_key(int id, T key) const
         {
 #if MEASUREMENT
-            ++measurements.worsen_key_called;
+            ++measurements["worsen_key_called"];
 #endif
             sift_down(id, key, track[id]);
         }
@@ -236,7 +211,7 @@ namespace priority_queue
         void remove_top()
         {
 #if MEASUREMENT
-            ++measurements.remove_top_called;
+            ++measurements["remove_top_called"];
 #endif
             remove(heap[0].id);
         }
@@ -244,7 +219,7 @@ namespace priority_queue
         void remove(int id)
         {
 #if MEASUREMENT
-            ++measurements.remove_called;
+            ++measurements["remove_called"];
 #endif
             auto [new_id, new_key] = heap[--n_active_item];
             sift_down(new_id, new_key, track[id]);
