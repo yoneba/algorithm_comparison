@@ -1,4 +1,4 @@
-#define MEASUREMENT true
+#define MEASUREMENT false
 
 #include "forest.hpp"
 #include "problem.hpp"

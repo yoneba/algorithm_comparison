@@ -1,4 +1,4 @@
-#define MEASUREMENT true
+#define MEASUREMENT false
 
 #include "problem.hpp"
 #include "inscribed_angle_approach.hpp"
